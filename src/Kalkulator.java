@@ -5,14 +5,14 @@ public class Kalkulator {
 
 	}
 
-	public int KalkulerDagsats(int grunnbeløp, int[] treSisteÅrslønner) {
-		int arbeidsdagerPerÅr = 260;
+	public double KontrollerKvalifiseringOgKalkulerDagsats(int grunnbeløp, int[] treSisteÅrslønner) {
+		double arbeidsdagerPerÅr = 260;
 
 		if (ErKvalifisert(grunnbeløp, treSisteÅrslønner)) {
 
-			int dagpengegrunnlag = RegnUtDagpengegrunnlag(grunnbeløp, treSisteÅrslønner);
+			double dagpengegrunnlag = RegnUtDagpengegrunnlag(grunnbeløp, treSisteÅrslønner);
 
-			int dagsats = RegnUtDagsats(dagpengegrunnlag, arbeidsdagerPerÅr);
+			double dagsats = RegnUtDagsats(dagpengegrunnlag, arbeidsdagerPerÅr);
 
 			return dagsats;
 
@@ -22,21 +22,24 @@ public class Kalkulator {
 
 	}
 
-	// For å være kvalifisert til å få dagpenger, må man ha hatt arbeidsinntekt
-	// minst det siste kalenderåret.
-	// For å få innvilget dagpenger må man enten ha tjent til sammen over 3G de
-	// siste 3 kalenderårene,
-	// eller ha tjent over 1.5G forrige kalenderår.
 	public boolean ErKvalifisert(int grunnbeløp, int[] treSisteÅrslønner) {
 		int fjoråretsLønn = treSisteÅrslønner[0];
 
-		if (ErKvalifisertPgaFjoråretsLønn(grunnbeløp, fjoråretsLønn)) {
-			return true;
-		}
-		if (ErKvalifisertPgaTreSisteÅrslønner(grunnbeløp, treSisteÅrslønner)) {
-			return true;
+		// For å være kvalifisert til å få dagpenger, må man ha hatt arbeidsinntekt
+		// minst det siste kalenderåret.
+		if (fjoråretsLønn > 0) {
+
+			// For å få innvilget dagpenger må man enten ha tjent til sammen over 3G de
+			// siste 3 kalenderårene eller ha tjent over 1.5G forrige kalenderår.
+			if (ErKvalifisertPgaTreSisteÅrslønner(grunnbeløp, treSisteÅrslønner)
+					|| ErKvalifisertPgaFjoråretsLønn(grunnbeløp, fjoråretsLønn)) {
+				return true;
+			} else
+				return false;
+
 		} else
 			return false;
+
 	}
 
 	public boolean ErKvalifisertPgaFjoråretsLønn(int grunnbeløp, int fjoråretsLønn) {
@@ -61,8 +64,7 @@ public class Kalkulator {
 	}
 
 	// Dagpengegrunnlaget er den høyeste verdien av enten inntekten siste
-	// kalenderåret,
-	// eller gjennomsnittsinntekten de siste tre kalenderårene.
+	// kalenderåret, eller gjennomsnittsinntekten de siste tre kalenderårene.
 	// Dagpengegrunnlaget kan ikke være høyere enn 6G.
 	public int RegnUtDagpengegrunnlag(int grunnbeløp, int[] treSisteÅrslønner) {
 		int dagpengegrunnlag;
@@ -92,9 +94,10 @@ public class Kalkulator {
 
 	// For å finne dagsatsen deler man dagpengegrunnlaget på antall arbeidsdager i
 	// året, rundet opp.
-	public int RegnUtDagsats(int dagpengegrunnlag, int arbeidsdager) {
-		int dagsats = dagpengegrunnlag / arbeidsdager;
+	public double RegnUtDagsats(double dagpengegrunnlag, double arbeidsdager) {
+		double dagsatsen = dagpengegrunnlag / arbeidsdager;
+		double dagsatsenRundetOpp = Math.ceil(dagsatsen);
 
-		return dagsats;
+		return dagsatsenRundetOpp;
 	}
 }

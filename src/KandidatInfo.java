@@ -2,7 +2,7 @@
 public class KandidatInfo {
 
 	//private int grunnbeløp;// Også kalt G, oppgis gjerne i multiplikater (1G, 2G, 5G osv.)
-	private int antallArbeidsdagerPrAnno = 260;
+	//private int antallArbeidsdagerPrAnno = 260;
 	private int[] treSisteÅrslønner = new int[3];
 	private Boolean harRettPåDagpenger;
 	private int dagsats = 0;
@@ -14,7 +14,7 @@ public class KandidatInfo {
 	public void setGrunnbeløp(int grunnbeløp) {
 		this.grunnbeløp = grunnbeløp;
 	}
-*/
+
 	public int getAntallArbeidsdagerPrAnno() {
 		return antallArbeidsdagerPrAnno;
 	}
@@ -22,7 +22,7 @@ public class KandidatInfo {
 	public void setAntallArbeidsdagerPrAnno(int antallArbeidsdagerPrAnno) {
 		this.antallArbeidsdagerPrAnno = antallArbeidsdagerPrAnno;
 	}
-
+*/
 	public int[] getTreSisteÅrslønner() {
 		return treSisteÅrslønner;
 	}

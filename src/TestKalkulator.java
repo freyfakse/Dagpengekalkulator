@@ -13,12 +13,12 @@ class TestKalkulator {
 	}
 
 	@Test
-	void TestKalkulerDagsats() {
-		int forventetDagsats = 1923;// 500.000 / 260 = 1923,0769...
+	void TestKontrollerKvalifiseringOgKalkulerDagsats() {
+		int forventetDagsats = 1924;
 		int grunnbeløp = 101351;
 		int[] treSisteÅrslønner = { 500000, 450000, 400000 };
 
-		int faktiskDagsats = Kalk.KalkulerDagsats(grunnbeløp, treSisteÅrslønner);
+		double faktiskDagsats = Kalk.KontrollerKvalifiseringOgKalkulerDagsats(grunnbeløp, treSisteÅrslønner);
 
 		assertEquals(forventetDagsats, faktiskDagsats);
 	}
@@ -74,10 +74,10 @@ class TestKalkulator {
 
 	@Test
 	void TestRegnUtDagsats() {
-		int dagpengegrunnlag = 9;
-		int arbeidsdager = 260;
-		int forventetDagsats = dagpengegrunnlag / arbeidsdager;
-		int faktiskDagsats = Kalk.RegnUtDagsats(dagpengegrunnlag, arbeidsdager);
+		double dagpengegrunnlag = 500000;
+		double arbeidsdager = 260;
+		double forventetDagsats = Math.ceil(dagpengegrunnlag / arbeidsdager);
+		double faktiskDagsats = Kalk.RegnUtDagsats(dagpengegrunnlag, arbeidsdager);
 
 		assertEquals(forventetDagsats, faktiskDagsats);
 	}
