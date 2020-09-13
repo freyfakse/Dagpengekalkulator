@@ -58,11 +58,9 @@ public class Brukergrensesnitt implements DocumentListener /* implements ActionL
 
 		for (int i = 0; i < 5; i++) {
 			tekstbokser[i].setFont(navFontModus);
-			// tekstbokser[i].addActionListener(this);
-			
 		}
-		
-		for(int i = 0; i < 3; i++) {
+
+		for (int i = 0; i < 3; i++) {
 			tekstbokser[i].getDocument().addDocumentListener(this);
 		}
 
@@ -86,55 +84,55 @@ public class Brukergrensesnitt implements DocumentListener /* implements ActionL
 		return beskrivelser;
 
 	}
-	/*
-	 * @Override public void actionPerformed(ActionEvent e) { // TODO Auto-generated
-	 * method stub
-	 * 
-	 * if(e.getSource().equals(fjoråretsLønnTextboks)){
-	 * System.out.println(fjoråretsLønnTextboks.getText()); }
-	 * 
-	 * }
-	 */
 
+	public void HåndterOppdatertTekst() {
+		int fjoråretsLønn, forfjoråretsLønn, forforfjoråretsLønn;
+
+		/** for å forhindre problemer med 0 vs. NULL i tekstfeltene */
+		if (fjoråretsLønnTextboks.getText().equals("")) {
+			fjoråretsLønn = 0;
+		} else
+			fjoråretsLønn = Integer.parseInt(fjoråretsLønnTextboks.getText());
+		if (forfjoråretsLønnTextboks.getText().equals("")) {
+			forfjoråretsLønn = 0;
+			
+		} else
+			forfjoråretsLønn = Integer.parseInt(forfjoråretsLønnTextboks.getText());
+		
+		if (forforfjoråretsLønnTextboks.getText().equals("")) {
+			forforfjoråretsLønn = 0;
+		} else
+			forforfjoråretsLønn = Integer.parseInt(forforfjoråretsLønnTextboks.getText());
+
+		int[] treSisteÅrslønner = { fjoråretsLønn, forfjoråretsLønn, forforfjoråretsLønn };
+
+		kandidat.setTreSisteÅrslønner(treSisteÅrslønner);
+
+		int dagsats = (int) kalkulator.KontrollerKvalifiseringOgKalkulerDagsats(grunnbeløp, treSisteÅrslønner);
+		kandidat.setDagsats(dagsats);
+
+		dagsatsTextboks.setText(Integer.toString(dagsats));
+
+	}
+	
 	@Override
 	public void changedUpdate(DocumentEvent arg0) {
 		// TODO Auto-generated method stub
-		String test = arg0.toString();
-		Print(test);
+		HåndterOppdatertTekst();
 	}
 
 	@Override
 	public void insertUpdate(DocumentEvent arg0) {
 		// TODO Auto-generated method stub
-		String test = arg0.toString();
-		Print(test);
+		HåndterOppdatertTekst();
 	}
 
 	@Override
 	public void removeUpdate(DocumentEvent arg0) {
 		// TODO Auto-generated method stub
-		String test = arg0.toString();
-		Print(test);
+		HåndterOppdatertTekst();
 	}
 
-	public void Print(String test) {
-		
-		System.out.println(test);
-		System.out.println(fjoråretsLønnTextboks.getText() + " " + forfjoråretsLønnTextboks.getText() + " "
-				+ forforfjoråretsLønnTextboks.getText());
-
-		int[] treSisteÅrslønner = { Integer.parseInt(fjoråretsLønnTextboks.getText()),
-				Integer.parseInt(forfjoråretsLønnTextboks.getText()),
-				Integer.parseInt(forforfjoråretsLønnTextboks.getText()) };
-
-		kandidat.setTreSisteÅrslønner(treSisteÅrslønner);
-		
-		int dagsats = (int) kalkulator.KontrollerKvalifiseringOgKalkulerDagsats(grunnbeløp, treSisteÅrslønner);
-		kandidat.setDagsats(dagsats);
-		
-		dagsatsTextboks.setText(Integer.toString(dagsats));
-
-		
-	}
+	
 
 }

@@ -15,12 +15,21 @@ class TestKalkulator {
 	@Test
 	void TestKontrollerKvalifiseringOgKalkulerDagsats() {
 		int forventetDagsats = 1924;
-		int grunnbeløp = 101351; //Grunnbeløpet (G) per 1. mai 2020 er kr 101 351.
+		int grunnbeløp = 101351; // Grunnbeløpet (G) per 1. mai 2020 er kr 101 351.
 		int[] treSisteÅrslønner = { 500000, 450000, 400000 };
-
 		double faktiskDagsats = Kalk.KontrollerKvalifiseringOgKalkulerDagsats(grunnbeløp, treSisteÅrslønner);
-
 		assertEquals(forventetDagsats, faktiskDagsats);
+
+		forventetDagsats = 1218;
+		int[] treSisteÅrslønnerForfjorStørst = { 100000, 450000, 400000 };
+		faktiskDagsats = Kalk.KontrollerKvalifiseringOgKalkulerDagsats(grunnbeløp, treSisteÅrslønnerForfjorStørst);
+		assertEquals(forventetDagsats, faktiskDagsats);
+
+		forventetDagsats = 1026;
+		int[] treSisteÅrslønnerForforfjorStørst = { 300000, 100000, 400000 };
+		faktiskDagsats = Kalk.KontrollerKvalifiseringOgKalkulerDagsats(grunnbeløp, treSisteÅrslønnerForforfjorStørst);
+		assertEquals(forventetDagsats, faktiskDagsats);
+
 	}
 
 	@Test
