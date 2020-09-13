@@ -14,7 +14,7 @@ class TestKalkulator {
 
 	@Test
 	void TestKalkulerDagsats() {
-		int forventetDagsats = 1924;
+		int forventetDagsats = 1923;// 500.000 / 260 = 1923,0769...
 		int grunnbeløp = 101351;
 		int[] treSisteÅrslønner = { 500000, 450000, 400000 };
 

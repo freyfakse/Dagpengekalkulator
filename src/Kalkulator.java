@@ -22,6 +22,8 @@ public class Kalkulator {
 
 	}
 
+	// For å være kvalifisert til å få dagpenger, må man ha hatt arbeidsinntekt
+	// minst det siste kalenderåret.
 	// For å få innvilget dagpenger må man enten ha tjent til sammen over 3G de
 	// siste 3 kalenderårene,
 	// eller ha tjent over 1.5G forrige kalenderår.

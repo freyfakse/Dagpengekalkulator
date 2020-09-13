@@ -1,66 +1,81 @@
+import java.awt.Font;
+import java.awt.GridLayout;
 import java.text.NumberFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import javax.swing.BoxLayout;
+import javax.swing.JButton;
 import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 
-public class Brukergrensesnitt extends JFrame{
+public class Brukergrensesnitt {
+
+	// Modus og Times New Roman skal brukes som hovedfonter for NAV - Designmanual,
+	// Visuell profil for NAV
+	Font navFontModus = new Font("Modus", Font.PLAIN, 14);
 
 	public Brukergrensesnitt() {
 		KandidatInfo Info = new KandidatInfo();
 		Kalkulator Kalkulator = new Kalkulator();
 
-		JFormattedTextField ftf[] = new JFormattedTextField[3];
-		String[] beskrivelser = new String[3];
-		//JFormattedTextField ftf2 = new JFormattedTextField();
-		
-		
-		
+		JTextField[] tekstbokser = LagTekstbokser();
+		JLabel[] tekstboksbeskrivelser = LagBeskrivelserForTekstbokser();
+
 		JFrame frame = new JFrame("Dagpenger");
-		//BoxLayout BL = new  BoxLayout(getContentPane(), BoxLayout.PAGE_AXIS);
-		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
-		//frame.setLayout(BL);
-		frame.setBounds(0, 0, 1000, 500);
+		frame.setLayout(new GridLayout(5, 2));
+		frame.setBounds(600, 400, 350, 250);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+		for (int i = 0; i < 5; i++) {
+			frame.add(tekstboksbeskrivelser[i]);
+			frame.add(tekstbokser[i]);
+		}
+
 		frame.setVisible(true);
 
-		//add(ftf);
-		
-		// String des[] = new String[ftf.length]; // description of each field
-		/*
-		 * des[0] = "Date"; ftf[0] = new JFormattedTextField(new java.util.Date());
-		 * 
-		 * des[1] = "Integer"; ftf[1] = new JFormattedTextField(new Integer(90032221));
-		 * 
-		 * des[2] = "Float"; ftf[2] = new JFormattedTextField(new Float(3.14));
-		 * 
-		 * des[3] = "Float work-around"; // manually specify a NumberFormat ftf[3] = new
-		 * JFormattedTextField(java.text.NumberFormat.getInstance());
-		 * ftf[3].setValue(new Float(3.14));
-		 * 
-		 * des[4] = "currency"; ftf[4] = new
-		 * JFormattedTextField(java.text.NumberFormat.getCurrencyInstance());
-		 * ftf[4].setValue(new Float(5.99));
-		 * 
-		 * des[5] = "percent"; ftf[5] = new
-		 * JFormattedTextField(java.text.NumberFormat.getPercentInstance());
-		 * ftf[5].setValue(new Float(0.33));
-		 * 
-		 * JPanel myPanel = new JPanel(); BoxLayout BL = new BoxLayout(myPanel,
-		 * BoxLayout.Y_AXIS); myPanel.setLayout(BL); for (int j = 0; j < ftf.length; j
-		 * += 1) { JPanel borderPanel = new JPanel(new java.awt.BorderLayout());
-		 * borderPanel.setBorder(new javax.swing.border.TitledBorder(des[j]));
-		 * borderPanel.add(ftf[j], java.awt.BorderLayout.CENTER);
-		 * myPanel.add(borderPanel); }
-		 * 
-		 */
+	}
 
-		/*
-		 * JFrame frame = new JFrame("Dagpenger"); frame.setBounds(0, 0, 1000, 500);
-		 * frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); frame.setVisible(true);
-		 */
+	public JTextField[] LagTekstbokser() {
+
+		JTextField fjoråretsLønnTextboks = new JTextField("0");
+		JTextField forfjoråretsLønnTextboks = new JTextField("0");
+		JTextField forforfjoråretsLønnTextboks = new JTextField("0");
+
+		JTextField grunnbeløpTextboks = new JTextField("101351");
+		grunnbeløpTextboks.setEditable(false);
+
+		JTextField dagsatsTextboks = new JTextField("0");
+		dagsatsTextboks.setEditable(false);
+
+		JTextField tekstbokser[] = { fjoråretsLønnTextboks, forfjoråretsLønnTextboks, forforfjoråretsLønnTextboks,
+				grunnbeløpTextboks, dagsatsTextboks };
+
+		for (int i = 0; i < 5; i++) {
+			tekstbokser[i].setFont(navFontModus);
+		}
+
+		return tekstbokser;
+
+	}
+
+	public JLabel[] LagBeskrivelserForTekstbokser() {
+		LocalDate dato = LocalDate.now();
+		int ifjor = dato.getYear() - 1;
+		int forfjor = dato.getYear() - 2;
+		int forforfjor = dato.getYear() - 3;
+
+		JLabel[] beskrivelser = { new JLabel("Lønn " + ifjor + ":"), new JLabel("Lønn " + forfjor + ":"),
+				new JLabel("Lønn " + forforfjor + ":"), new JLabel("Grunnbeløp (G):"), new JLabel("Dagsats:") };
+
+		for (int i = 0; i < 5; i++) {
+			beskrivelser[i].setFont(navFontModus);
+		}
+
+		return beskrivelser;
 
 	}
 }
