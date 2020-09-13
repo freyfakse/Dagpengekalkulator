@@ -15,7 +15,7 @@ class TestKalkulator {
 	@Test
 	void TestKontrollerKvalifiseringOgKalkulerDagsats() {
 		int forventetDagsats = 1924;
-		int grunnbeløp = 101351;
+		int grunnbeløp = 101351; //Grunnbeløpet (G) per 1. mai 2020 er kr 101 351.
 		int[] treSisteÅrslønner = { 500000, 450000, 400000 };
 
 		double faktiskDagsats = Kalk.KontrollerKvalifiseringOgKalkulerDagsats(grunnbeløp, treSisteÅrslønner);
