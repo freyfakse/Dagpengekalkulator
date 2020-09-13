@@ -26,7 +26,7 @@ class TestKalkulator {
 		assertEquals(forventetDagsats, faktiskDagsats);
 
 		forventetDagsats = 1026;
-		int[] treSisteÅrslønnerForforfjorStørst = { 300000, 100000, 400000 };
+		int[] treSisteÅrslønnerForforfjorStørst = { 100000, 300000, 400000 };
 		faktiskDagsats = Kalk.KontrollerKvalifiseringOgKalkulerDagsats(grunnbeløp, treSisteÅrslønnerForforfjorStørst);
 		assertEquals(forventetDagsats, faktiskDagsats);
 
@@ -67,7 +67,7 @@ class TestKalkulator {
 		int grunnbeløp = 100000;
 		int[] treSisteÅrslønner = { 500000, 450000, 400000 };
 		int forventetDagpengegrunnlag = 500000;
-		int faktiskDagpengegrunnlag = Kalk.RegnUtDagpengegrunnlag(grunnbeløp, treSisteÅrslønner);
+		double faktiskDagpengegrunnlag = Kalk.RegnUtDagpengegrunnlag(grunnbeløp, treSisteÅrslønner);
 
 		assertEquals(forventetDagpengegrunnlag, faktiskDagpengegrunnlag,
 				"Ikke samme verdi" + forventetDagpengegrunnlag + " og " + faktiskDagpengegrunnlag);
@@ -77,8 +77,7 @@ class TestKalkulator {
 		forventetDagpengegrunnlag = 60;
 		faktiskDagpengegrunnlag = Kalk.RegnUtDagpengegrunnlag(grunnbeløp, treSisteÅrslønner);
 
-		assertEquals(forventetDagpengegrunnlag, faktiskDagpengegrunnlag,
-				"Ikke samme verdi: " + forventetDagpengegrunnlag + " og " + faktiskDagpengegrunnlag);
+		assertEquals(forventetDagpengegrunnlag, faktiskDagpengegrunnlag);
 	}
 
 	@Test

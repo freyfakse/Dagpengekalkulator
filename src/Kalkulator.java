@@ -29,8 +29,7 @@ public class Kalkulator {
 		// minst det siste kalenderåret.
 		if (fjoråretsLønn > 0) {
 
-			// For å få innvilget dagpenger må man enten ha tjent til sammen over 3G de
-			// siste 3 kalenderårene eller ha tjent over 1.5G forrige kalenderår.
+			 
 			if (ErKvalifisertPgaTreSisteÅrslønner(grunnbeløp, treSisteÅrslønner)
 					|| ErKvalifisertPgaFjoråretsLønn(grunnbeløp, fjoråretsLønn)) {
 				return true;
@@ -42,16 +41,8 @@ public class Kalkulator {
 
 	}
 
-	public boolean ErKvalifisertPgaFjoråretsLønn(int grunnbeløp, int fjoråretsLønn) {
-		double nedreTerskelForKvalifisering = 1.5 * grunnbeløp;
-
-		if (fjoråretsLønn > nedreTerskelForKvalifisering) {
-			return true;
-		} else
-			return false;
-
-	}
-
+	// For å få innvilget dagpenger må man enten ha tjent til sammen over 3G de
+	// siste 3 kalenderårene...
 	public boolean ErKvalifisertPgaTreSisteÅrslønner(int grunnbeløp, int[] treSisteÅrslønner) {
 		int nedreTerskelForKvalifisering = 3 * grunnbeløp;
 		int sumTreSisteÅrslønner = treSisteÅrslønner[0] + treSisteÅrslønner[1] + treSisteÅrslønner[2];
@@ -60,31 +51,32 @@ public class Kalkulator {
 			return true;
 		} else
 			return false;
+	}
+	
+	//...eller ha tjent over 1.5G forrige kalenderår.
+	public boolean ErKvalifisertPgaFjoråretsLønn(int grunnbeløp, int fjoråretsLønn) {
+		double nedreTerskelForKvalifisering = 1.5 * grunnbeløp;
 
+		if (fjoråretsLønn > nedreTerskelForKvalifisering) {
+			return true;
+		} else
+			return false;
 	}
 
-	// Dagpengegrunnlaget er den høyeste verdien av enten inntekten siste
-	// kalenderåret, eller gjennomsnittsinntekten de siste tre kalenderårene.
-	// Dagpengegrunnlaget kan ikke være høyere enn 6G.
-	public int RegnUtDagpengegrunnlag(int grunnbeløp, int[] treSisteÅrslønner) {
-		int dagpengegrunnlag;
+	public double RegnUtDagpengegrunnlag(int grunnbeløp, int[] treSisteÅrslønner) {
+		double dagpengegrunnlag = 0;
 		int maksVerdiPåDagpengegrunnlag = 6 * grunnbeløp;// Unngår hardkoding
-		int høyesteÅrslønn = 0;
-		int sumTreSisteÅrslønner = treSisteÅrslønner[0] + treSisteÅrslønner[1] + treSisteÅrslønner[2];
-		int gjennomsnittsinntektTreSisteÅr = sumTreSisteÅrslønner / 3;
+		double sumTreSisteÅrslønner = treSisteÅrslønner[0] + treSisteÅrslønner[1] + treSisteÅrslønner[2];
+		double gjennomsnittsinntektTreSisteÅr = sumTreSisteÅrslønner / 3;
 
-		for (int i = 0; i < treSisteÅrslønner.length; i++) {
-			if (høyesteÅrslønn < treSisteÅrslønner[i]) {
-				høyesteÅrslønn = treSisteÅrslønner[i];
-			}
-		}
-
-		if (gjennomsnittsinntektTreSisteÅr > høyesteÅrslønn) {
+		// Dagpengegrunnlaget er den høyeste verdien av enten inntekten siste
+		// kalenderåret, eller gjennomsnittsinntekten de siste tre kalenderårene.
+		if (gjennomsnittsinntektTreSisteÅr > treSisteÅrslønner[0]) {
 			dagpengegrunnlag = gjennomsnittsinntektTreSisteÅr;
-
 		} else
-			dagpengegrunnlag = høyesteÅrslønn;
+			dagpengegrunnlag = treSisteÅrslønner[0];
 
+		// Dagpengegrunnlaget kan ikke være høyere enn 6G.
 		if (dagpengegrunnlag > maksVerdiPåDagpengegrunnlag) {
 			dagpengegrunnlag = maksVerdiPåDagpengegrunnlag;
 		}

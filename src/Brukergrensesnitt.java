@@ -1,19 +1,18 @@
 import java.awt.Font;
 import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.time.LocalDate;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
-import javax.swing.SwingUtilities;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-public class Brukergrensesnitt implements DocumentListener /* implements ActionListener */ {
+public class Brukergrensesnitt implements DocumentListener {
 
 	int grunnbeløp = 101351; // Grunnbeløpet (G) per 1. mai 2020 er kr 101 351.
+	int antallRader = 6;// Unngår hardkoding
+	int antallKolonner = 2;
 
 	// Modus og Times New Roman skal brukes som hovedfonter for NAV - Designmanual,
 	// Visuell profil for NAV
@@ -22,11 +21,12 @@ public class Brukergrensesnitt implements DocumentListener /* implements ActionL
 	KandidatInfo kandidat = new KandidatInfo();
 	Kalkulator kalkulator = new Kalkulator();
 
-	JTextField fjoråretsLønnTextboks = new JTextField("0");
-	JTextField forfjoråretsLønnTextboks = new JTextField("0");
-	JTextField forforfjoråretsLønnTextboks = new JTextField("0");
-	JTextField grunnbeløpTextboks = new JTextField("101351");
-	JTextField dagsatsTextboks = new JTextField("0");
+	JTextField fjoråretsLønnTekstboks = new JTextField("0");
+	JTextField forfjoråretsLønnTekstboks = new JTextField("0");
+	JTextField forforfjoråretsLønnTekstboks = new JTextField("0");
+	JTextField grunnbeløpTekstboks = new JTextField("101351");
+	JTextField rettPåDagpengerTekstboks = new JTextField("Nei");
+	JTextField dagsatsTekstboks = new JTextField("0");
 
 	public Brukergrensesnitt() {
 
@@ -34,11 +34,11 @@ public class Brukergrensesnitt implements DocumentListener /* implements ActionL
 		JLabel[] tekstboksbeskrivelser = LagBeskrivelserForTekstbokser();
 
 		JFrame frame = new JFrame("Dagpenger");
-		frame.setLayout(new GridLayout(5, 2));
+		frame.setLayout(new GridLayout(antallRader, antallKolonner));
 		frame.setBounds(600, 400, 350, 250);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-		for (int i = 0; i < 5; i++) {
+		for (int i = 0; i < antallRader; i++) {
 			frame.add(tekstboksbeskrivelser[i]);
 			frame.add(tekstbokser[i]);
 		}
@@ -49,17 +49,18 @@ public class Brukergrensesnitt implements DocumentListener /* implements ActionL
 
 	public JTextField[] LagTekstbokser() {
 
-		grunnbeløpTextboks.setEditable(false);
+		grunnbeløpTekstboks.setEditable(false);
+		dagsatsTekstboks.setEditable(false);
+		rettPåDagpengerTekstboks.setEditable(false);
 
-		dagsatsTextboks.setEditable(false);
+		JTextField tekstbokser[] = { fjoråretsLønnTekstboks, forfjoråretsLønnTekstboks, forforfjoråretsLønnTekstboks,
+				grunnbeløpTekstboks, rettPåDagpengerTekstboks, dagsatsTekstboks };
 
-		JTextField tekstbokser[] = { fjoråretsLønnTextboks, forfjoråretsLønnTextboks, forforfjoråretsLønnTextboks,
-				grunnbeløpTextboks, dagsatsTextboks };
-
-		for (int i = 0; i < 5; i++) {
+		for (int i = 0; i < antallRader; i++) {
 			tekstbokser[i].setFont(navFontModus);
 		}
 
+		// Kun de tre første boksene som trenger å kunne endres
 		for (int i = 0; i < 3; i++) {
 			tekstbokser[i].getDocument().addDocumentListener(this);
 		}
@@ -75,9 +76,10 @@ public class Brukergrensesnitt implements DocumentListener /* implements ActionL
 		int forforfjor = dato.getYear() - 3;
 
 		JLabel[] beskrivelser = { new JLabel("Lønn " + ifjor + ":"), new JLabel("Lønn " + forfjor + ":"),
-				new JLabel("Lønn " + forforfjor + ":"), new JLabel("Grunnbeløp (G):"), new JLabel("Dagsats:") };
+				new JLabel("Lønn " + forforfjor + ":"), new JLabel("Grunnbeløp (G):"), new JLabel("Rett på dagpenger:"),
+				new JLabel("Dagsats:") };
 
-		for (int i = 0; i < 5; i++) {
+		for (int i = 0; i < antallRader; i++) {
 			beskrivelser[i].setFont(navFontModus);
 		}
 
@@ -88,33 +90,39 @@ public class Brukergrensesnitt implements DocumentListener /* implements ActionL
 	public void HåndterOppdatertTekst() {
 		int fjoråretsLønn, forfjoråretsLønn, forforfjoråretsLønn;
 
-		/** for å forhindre problemer med 0 vs. NULL i tekstfeltene */
-		if (fjoråretsLønnTextboks.getText().equals("")) {
+		// For å forhindre problemer med 0 vs. NULL i tekstfeltene
+		if (fjoråretsLønnTekstboks.getText().equals("")) {
 			fjoråretsLønn = 0;
 		} else
-			fjoråretsLønn = Integer.parseInt(fjoråretsLønnTextboks.getText());
-		if (forfjoråretsLønnTextboks.getText().equals("")) {
+			fjoråretsLønn = Integer.parseInt(fjoråretsLønnTekstboks.getText());
+
+		if (forfjoråretsLønnTekstboks.getText().equals("")) {
 			forfjoråretsLønn = 0;
-			
 		} else
-			forfjoråretsLønn = Integer.parseInt(forfjoråretsLønnTextboks.getText());
-		
-		if (forforfjoråretsLønnTextboks.getText().equals("")) {
+			forfjoråretsLønn = Integer.parseInt(forfjoråretsLønnTekstboks.getText());
+
+		if (forforfjoråretsLønnTekstboks.getText().equals("")) {
 			forforfjoråretsLønn = 0;
 		} else
-			forforfjoråretsLønn = Integer.parseInt(forforfjoråretsLønnTextboks.getText());
+			forforfjoråretsLønn = Integer.parseInt(forforfjoråretsLønnTekstboks.getText());
 
 		int[] treSisteÅrslønner = { fjoråretsLønn, forfjoråretsLønn, forforfjoråretsLønn };
 
 		kandidat.setTreSisteÅrslønner(treSisteÅrslønner);
 
 		int dagsats = (int) kalkulator.KontrollerKvalifiseringOgKalkulerDagsats(grunnbeløp, treSisteÅrslønner);
+
+		if (dagsats == 0) {
+			rettPåDagpengerTekstboks.setText("Nei");
+		} else if (dagsats > 0) {
+			rettPåDagpengerTekstboks.setText("Ja");
+		}
+
 		kandidat.setDagsats(dagsats);
 
-		dagsatsTextboks.setText(Integer.toString(dagsats));
-
+		dagsatsTekstboks.setText(Integer.toString(dagsats));
 	}
-	
+
 	@Override
 	public void changedUpdate(DocumentEvent arg0) {
 		// TODO Auto-generated method stub
@@ -132,7 +140,5 @@ public class Brukergrensesnitt implements DocumentListener /* implements ActionL
 		// TODO Auto-generated method stub
 		HåndterOppdatertTekst();
 	}
-
-	
 
 }
