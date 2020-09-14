@@ -11,7 +11,7 @@ import javax.swing.event.DocumentListener;
 
 public class Brukergrensesnitt implements DocumentListener {
 
-	int grunnbeløp = 101351; // Grunnbeløpet (G) per 1. mai 2020 er kr 101 351.
+	int grunnbeløp = 101351; // Grunnbeløpet (G) per 1. mai 2020 er kr. 101351.
 	int antallRader = 6;// Unngår hardkoding
 	int antallKolonner = 2;
 
@@ -90,14 +90,10 @@ public class Brukergrensesnitt implements DocumentListener {
 	}
 
 	public void HåndterOppdatertTekst() {
-		// int fjoråretsLønn = 0, forfjoråretsLønn = 0, forforfjoråretsLønn = 0; // maks
-		// inntekt på et år: 2.147.483.647
 
 		String[] tekstboksInndata = { fjoråretsLønnTekstboks.getText(), forfjoråretsLønnTekstboks.getText(),
 				forforfjoråretsLønnTekstboks.getText() };
 
-		// int[] treSisteÅrslønner = { fjoråretsLønn, forfjoråretsLønn,
-		// forforfjoråretsLønn };
 		int[] treSisteÅrslønner = SjekkInndata(tekstboksInndata);
 
 		kandidat.setTreSisteÅrslønner(treSisteÅrslønner);
@@ -129,8 +125,7 @@ public class Brukergrensesnitt implements DocumentListener {
 				treSisteÅrslønner[0] = Integer.parseInt(inndataFraTekstbokser[0]);
 			} catch (NumberFormatException e) {
 				e.printStackTrace();
-				JOptionPane.showMessageDialog(frame, "Ugyldig tall er oppgitt.", "Tastefeil",
-						JOptionPane.ERROR_MESSAGE);
+				Feilmelding();
 			}
 		}
 
@@ -141,8 +136,7 @@ public class Brukergrensesnitt implements DocumentListener {
 				treSisteÅrslønner[1] = Integer.parseInt(inndataFraTekstbokser[1]);
 			} catch (NumberFormatException e) {
 				e.printStackTrace();
-				JOptionPane.showMessageDialog(frame, "Ugyldig tall er oppgitt.", "Tastefeil",
-						JOptionPane.ERROR_MESSAGE);
+				Feilmelding();
 			}
 		}
 
@@ -153,12 +147,16 @@ public class Brukergrensesnitt implements DocumentListener {
 				treSisteÅrslønner[2] = Integer.parseInt(inndataFraTekstbokser[2]);
 			} catch (NumberFormatException e) {
 				e.printStackTrace();
-				JOptionPane.showMessageDialog(frame, "Ugyldig tall er oppgitt.", "Tastefeil",
-						JOptionPane.ERROR_MESSAGE);
+				Feilmelding();
 			}
 		}
 
 		return treSisteÅrslønner;
+	}
+	
+	public void Feilmelding() {
+		JOptionPane.showMessageDialog(frame, "Ugyldig tall er oppgitt.", "Tastefeil",
+				JOptionPane.ERROR_MESSAGE);
 	}
 
 	@Override
