@@ -26,7 +26,7 @@ class TestBrukergrensesnitt {
 
 	@Test
 	void TestLagBeskrivelserForTekstbokser() {
-		LocalDate dato = LocalDate.now();
+
 		JLabel[] faktiskeBeskrivelser = GUI.LagBeskrivelserForTekstbokser();
 
 		assertNotNull(faktiskeBeskrivelser);

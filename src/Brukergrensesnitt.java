@@ -11,9 +11,15 @@ import javax.swing.event.DocumentListener;
 
 public class Brukergrensesnitt implements DocumentListener {
 
-	int grunnbeløp = 101351; // Grunnbeløpet (G) per 1. mai 2020 er kr. 101351.
-	int antallRader = 6;// Unngår hardkoding
-	int antallKolonner = 2;
+	final int grunnbeløp = 101351; // Grunnbeløpet (G) per 1. mai 2020 er kr. 101351.
+	final int antallRader = 6;// Unngår hardkoding
+	final int antallKolonner = 2;
+
+	LocalDate dato = LocalDate.now();
+	final int ifjor = dato.getYear() - 1;
+	final int forfjor = dato.getYear() - 2;
+	final int forforfjor = dato.getYear() - 3;
+	int[] årstall = { ifjor, forfjor, forforfjor };
 
 	// Modus og Times New Roman skal brukes som hovedfonter for NAV - Designmanual,
 	// Visuell profil for NAV
@@ -46,7 +52,6 @@ public class Brukergrensesnitt implements DocumentListener {
 		}
 
 		frame.setVisible(true);
-
 	}
 
 	public JTextField[] LagTekstbokser() {
@@ -68,14 +73,9 @@ public class Brukergrensesnitt implements DocumentListener {
 		}
 
 		return tekstbokser;
-
 	}
 
 	public JLabel[] LagBeskrivelserForTekstbokser() {
-		LocalDate dato = LocalDate.now();
-		int ifjor = dato.getYear() - 1;
-		int forfjor = dato.getYear() - 2;
-		int forforfjor = dato.getYear() - 3;
 
 		JLabel[] beskrivelser = { new JLabel("Lønn " + ifjor + ":"), new JLabel("Lønn " + forfjor + ":"),
 				new JLabel("Lønn " + forforfjor + ":"), new JLabel("Grunnbeløp (G):"), new JLabel("Rett på dagpenger:"),
@@ -86,7 +86,6 @@ public class Brukergrensesnitt implements DocumentListener {
 		}
 
 		return beskrivelser;
-
 	}
 
 	public void HåndterOppdatertTekst() {
@@ -116,46 +115,32 @@ public class Brukergrensesnitt implements DocumentListener {
 
 		int[] treSisteÅrslønner = { 0, 0, 0 };
 
-		// For å forhindre problemer med 0 vs. "" i tekstfeltene og fange opp ugylig
-		// inntastning (NumberFormatException).
-		if (inndataFraTekstbokser[0].equals("")) {
-			treSisteÅrslønner[0] = 0;
-		} else {
-			try {
-				treSisteÅrslønner[0] = Integer.parseInt(inndataFraTekstbokser[0]);
-			} catch (NumberFormatException e) {
-				e.printStackTrace();
-				Feilmelding();
-			}
-		}
-
-		if (inndataFraTekstbokser[1].equals("")) {
-			treSisteÅrslønner[1] = 0;
-		} else {
-			try {
-				treSisteÅrslønner[1] = Integer.parseInt(inndataFraTekstbokser[1]);
-			} catch (NumberFormatException e) {
-				e.printStackTrace();
-				Feilmelding();
-			}
-		}
-
-		if (inndataFraTekstbokser[2].equals("")) {
-			treSisteÅrslønner[2] = 0;
-		} else {
-			try {
-				treSisteÅrslønner[2] = Integer.parseInt(inndataFraTekstbokser[2]);
-			} catch (NumberFormatException e) {
-				e.printStackTrace();
-				Feilmelding();
-			}
+		for (int i = 0; i < 3; i++) {
+			treSisteÅrslønner[i] = sjekkInndataForTastefeil(treSisteÅrslønner[i], inndataFraTekstbokser[i],
+					"Lønn " + årstall[i]);
 		}
 
 		return treSisteÅrslønner;
 	}
-	
-	public void Feilmelding() {
-		JOptionPane.showMessageDialog(frame, "Ugyldig tall er oppgitt.", "Tastefeil",
+
+	// For å forhindre problemer med 0 vs. "" i tekstfeltene og fange opp ugylig
+	// inntastning (NumberFormatException).
+	public int sjekkInndataForTastefeil(int årslønn, String inndataFraEnTekstboks, String tekstForanTekstboks) {
+		if (inndataFraEnTekstboks.equals("")) {
+			årslønn = 0;
+		} else {
+			try {
+				årslønn = Integer.parseInt(inndataFraEnTekstboks);
+			} catch (NumberFormatException e) {
+				e.printStackTrace();
+				Feilmelding(tekstForanTekstboks);
+			}
+		}
+		return årslønn;
+	}
+
+	public void Feilmelding(String navnPåTekstboksMedFeil) {
+		JOptionPane.showMessageDialog(frame, "Ugyldig tall er oppgitt i " + navnPåTekstboksMedFeil, "Tastefeil",
 				JOptionPane.ERROR_MESSAGE);
 	}
 
