@@ -116,7 +116,7 @@ public class Brukergrensesnitt implements DocumentListener {
 		int[] treSisteÅrslønner = { 0, 0, 0 };
 
 		for (int i = 0; i < 3; i++) {
-			treSisteÅrslønner[i] = sjekkInndataForTastefeil(treSisteÅrslønner[i], inndataFraTekstbokser[i],
+			treSisteÅrslønner[i] = SjekkInndataForTastefeil(treSisteÅrslønner[i], inndataFraTekstbokser[i],
 					"Lønn " + årstall[i]);
 		}
 
@@ -125,7 +125,7 @@ public class Brukergrensesnitt implements DocumentListener {
 
 	// For å forhindre problemer med 0 vs. "" i tekstfeltene og fange opp ugylig
 	// inntastning (NumberFormatException).
-	public int sjekkInndataForTastefeil(int årslønn, String inndataFraEnTekstboks, String tekstForanTekstboks) {
+	public int SjekkInndataForTastefeil(int årslønn, String inndataFraEnTekstboks, String tekstForanTekstboks) {
 		if (inndataFraEnTekstboks.equals("")) {
 			årslønn = 0;
 		} else {
